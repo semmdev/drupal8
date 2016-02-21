@@ -40,7 +40,7 @@ function editor_image_upload_settings_form(Editor $editor) {
     '#title' => t('Enable image uploads'),
     '#default_value' => $image_upload['status'],
     '#attributes' => array(
-      'data-editor-image-upload' => 'status',
+    'data-editor-image-upload' => 'status',
     ),
   );
   $show_if_image_uploads_enabled = array(
