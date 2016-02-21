@@ -1,0 +1,40 @@
+diff --git a/core/modules/editor/editor.admin.inc b/core/modules/editor/editor.admin.inc
+index 69acabe..7924505 100644
+--- a/core/modules/editor/editor.admin.inc
++++ b/core/modules/editor/editor.admin.inc
+@@ -33,6 +33,7 @@ function editor_image_upload_settings_form(Editor $editor) {
+     'directory' => 'inline-images',
+     'max_size' => '',
+     'max_dimensions' => array('width' => '', 'height' => ''),
++    'require_alt_text' => FALSE,
+   );
+ 
+   $form['status'] = array(
+@@ -127,5 +128,13 @@ function editor_image_upload_settings_form(Editor $editor) {
+     '#states' => $show_if_image_uploads_enabled,
+   );
+ 
++  $form['require_alt_text'] = array(
++    '#type' => 'checkbox',
++    '#default_value' => $image_upload['require_alt_text'],
++    '#title' => t('Require alt text'),
++    '#description' => t('If this is checked, alternative text field for images will always be required.'),
++    '#states' => $show_if_image_uploads_enabled,
++  );
++
+   return $form;
+ }
+diff --git a/core/modules/editor/src/Form/EditorImageDialog.php b/core/modules/editor/src/Form/EditorImageDialog.php
+index 893b5a4..f32d6c1 100644
+--- a/core/modules/editor/src/Form/EditorImageDialog.php
++++ b/core/modules/editor/src/Form/EditorImageDialog.php
+@@ -151,6 +151,34 @@ public function buildForm(array $form, FormStateInterface $form_state, FilterFormat $filter_
+    $form['attributes']['alt'] = array(
+      '#title' => $this->t('Alternative text'),
+      '#placeholder' => $this->t('Short description for the visually impaired'),
+      '#type' => 'textfield',
++    '#required' => $image_upload['require_alt_text'],
+      '#required_error' => $this->t('Alternative text is required.<br />(Only in rare cases should this be left empty. To create empty alternative text, enter <code>""</code> — two double quotes without any content).'),
+      '#default_value' => $alt,
+      '#maxlength' => 2048,
+    );
