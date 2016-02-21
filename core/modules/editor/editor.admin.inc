@@ -33,6 +33,7 @@ function editor_image_upload_settings_form(Editor $editor) {
     'directory' => 'inline-images',
     'max_size' => '',
     'max_dimensions' => array('width' => '', 'height' => ''),
+    'require_alt_text' => FALSE,
   );
 
   $form['status'] = array(
@@ -121,6 +122,14 @@ function editor_image_upload_settings_form(Editor $editor) {
     '#max' => 99999,
     '#placeholder' => t('height'),
     '#field_suffix' => t('pixels'),
+    '#states' => $show_if_image_uploads_enabled,
+  );
+
+  $form['require_alt_text'] = array(
+    '#type' => 'checkbox',
+    '#default_value' => $image_upload['require_alt_text'],
+    '#title' => t('Require alt text'),
+    '#description' => t('If this is checked, alternative text field for images will always be required.'),
     '#states' => $show_if_image_uploads_enabled,
   );
 
